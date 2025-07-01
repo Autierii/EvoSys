@@ -1,102 +1,120 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import '../services/api_service.dart';
+import '../models/movie.dart';
+import 'details.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(top: 40, left: 20, right: 20),
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-              color: Color(0xff1D1617),
-              blurRadius: 40,
-              spreadRadius: 0.0
-                )
-              ]
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: const Color.fromARGB(255, 232, 244, 255),
-                contentPadding: EdgeInsets.all(15),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: SvgPicture.asset(
-                    'assets/icons/search.svg',
-                    height: 20,
-                    width: 20,
-                    ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                )
-              )
-            ),
-          )
-        ]
-      ),
-    );
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+    class _HomeScreenState extends State<HomeScreen> {
+      final ApiService _apiService = ApiService();
+          List<Movie> _movies = [];
+        final TextEditingController _controller = TextEditingController();
+
+  @override
+    void initState() {
+        super.initState();
+     _loadPopularMovies();
+      }
+
+      void _loadPopularMovies() async {
+        final movies = await _apiService.fetchPopularMovies();
+        setState(() {
+          _movies = movies;
+      }
+      );
+
   }
 
+  void _searchMovies(String query) async {
+        if (query.isEmpty) {
+          _loadPopularMovies();
+        } else {
+            final movies = await _apiService.searchMovies(query);
+        setState(() {
+          _movies = movies;
+        });
+    }
+  }
 
-    AppBar _buildAppBar() {
-      return AppBar(
-        title: Text(
-          'Evo Systems',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: const Color.fromARGB(255, 56, 126, 255),
-        elevation: 0.0,
-        centerTitle: true,
-        leading: Container(
-          margin: EdgeInsets.all(10),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Color(0xffF7F8F8),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: GestureDetector(
-            onTap: () {
-              
-            },
-            child: SvgPicture.asset(
-              'assets/icons/left-arrow-svgrepo-com.svg',
-              height: 20,
-              width: 20,
-            ),
-          ),
-        ),
-        actions: [
-          Container(
+  @override
+     Widget build(BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Filmes'),
+            leading: Container(
             margin: EdgeInsets.all(10),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: Color(0xffF7F8F8),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10)
+                ),
             ),
-            child: GestureDetector(
-              onTap: () {
-                
-              },
-              child: SvgPicture.asset(
-                'assets/icons/dots-horizontal-alt-svgrepo-com.svg',
-                width: 37,
+        ),
+      
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controller,
+              onChanged: _searchMovies,
+              decoration: const InputDecoration(
+               hintText: 'Buscar filmes...',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
               ),
             ),
           ),
-        ],
-      );
-    }
+              Expanded(
+              child: GridView.builder(
+                   itemCount: _movies.length,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                childAspectRatio: 0.6,
+              ),
+              itemBuilder: (context, index) {
+                final movie = _movies[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DetailsPage(movie: movie),
+                      ),
+                      );
+                       },
+                   child: Card(
+                           child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                            Expanded(
+                                child: Image.network(
+                              'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                              fit: BoxFit.cover,
+                             ),
+                          ),
+                          Padding(
+                          padding: const EdgeInsets.all(4.0),
+                           child: Text(
+                             movie.title,
+                             maxLines: 2,
+                             overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                          ],
+                        ),
+                  ),
+                   );
+                 },
+                ),
+              ),
+          ],
+      ),
+    );
   }
+}
