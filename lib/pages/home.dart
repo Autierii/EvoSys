@@ -12,8 +12,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ApiService _apiService = ApiService();
-  List<Movie> _movies = [];
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  List<Movie> _movies = [];
+
+  void _resetHomeScreen(){
+    FocusScope.of(context).unfocus();
+    _controller.clear();
+    _loadPopularMovies();
+    _scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   void initState() {
@@ -43,14 +56,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Evo Sys'),
-        centerTitle: true,
-        elevation: 0,
         backgroundColor: Colors.blueAccent,
-        leading: Container(
-          margin: const EdgeInsets.all(10),
-          alignment: Alignment.center,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: _resetHomeScreen,
         ),
+        title: const Text('EVO System'),
+        centerTitle: true,
       ),
       body: Column(
         children: [
@@ -67,9 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: GridView.builder(
+              controller: _scrollController, // <- define o controller
               padding: const EdgeInsets.all(12),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 250,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
                 childAspectRatio: 0.65,
@@ -98,13 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 8),
                       Text(
                         movie.title,
-                        style: const TextStyle(fontSize: 14),
-                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                         maxLines: 2,
-                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
