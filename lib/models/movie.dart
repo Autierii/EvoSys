@@ -3,7 +3,7 @@ class Movie {
   final String title;
   final String posterPath;
   final String overview;
-  final String releaseDate;
+  final DateTime releaseDate;
 
   Movie({
     required this.id,
@@ -19,12 +19,7 @@ class Movie {
       title: json['title'] ?? 'Sem título',
       posterPath: json['poster_path'] ?? '',
       overview: json['overview'] ?? 'Sem descrição',
-      releaseDate: json['release_date'] ?? '',
+      releaseDate: DateTime.tryParse(json['release_date'] ?? '') ?? DateTime(1900),
     );
-  }
-
-  int get releaseYear {
-    if (releaseDate.isEmpty) return 0;
-    return int.tryParse(releaseDate.split('-').first) ?? 0;
   }
 }
