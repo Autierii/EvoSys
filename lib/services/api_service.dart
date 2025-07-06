@@ -16,9 +16,7 @@ class ApiService {
       final List results = data['results'];
 
       final movies = results.map((json) => Movie.fromJson(json)).toList().cast<Movie>();
-
-      // Ordenar por data de lançamento (mais recentes primeiro)
-      movies.sort((a, b) => b.releaseDate.compareTo(a.releaseDate));
+      movies.sort((a, b) => b.releaseDate.compareTo(a.releaseDate)); // ordena por data
       return movies;
     } else {
       throw Exception('Falha ao buscar filmes');
@@ -37,6 +35,21 @@ class ApiService {
       return results.map((json) => Movie.fromJson(json)).toList().cast<Movie>();
     } else {
       throw Exception('Erro ao carregar filmes em destaque');
+    }
+  }
+
+  Future<List<Movie>> fetchNowPlayingMovies() async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/movie/now_playing?api_key=$apikey&language=pt-BR'),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List results = data['results'];
+
+      return results.map((json) => Movie.fromJson(json)).toList().cast<Movie>();
+    } else {
+      throw Exception('Falha ao buscar lançamentos recentes');
     }
   }
 }
