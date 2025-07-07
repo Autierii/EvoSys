@@ -1,16 +1,48 @@
-# movies
+# 🎬 EVO System – App de Filmes em Flutter
 
-A new Flutter project.
+Aplicativo desenvolvido em Flutter que permite buscar e visualizar detalhes de filmes usando a API do TMDB. Possui interface responsiva, tema em tons de azul e layout intuitivo.
 
-## Getting Started
+## 📱 Funcionalidades
 
-This project is a starting point for a Flutter application.
+- Exibição de filmes em alta e lançamentos recentes
+- Busca por título de filme, por ordem de lançamento
+- Página de detalhes com imagem, título, ano e sinopse
+- Layout responsivo para celulares, tablets e computadores
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠 Tecnologias Utilizadas
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter
+- Dart
+- API TMDB
+- Widgets personalizados (carrossel, botões, cards)
+- Fonte: Roboto
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🎨 Paleta de Cores
+
+- Fundo: `#E3F2FD` (azul claro)
+- AppBar: `#0D47A1` (azul escuro)
+- Botões: `#1976D2` (azul médio)
+- Textos principais: `#212121` (preto 87%)
+- Textos secundários: `#757575` (preto 54%)
+
+## ▶️ Como Executar
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/Autierii/EvoSys.git
+   cd movies
+
+2. Instale as dependências
+   ```bash
+   flutter pub get
+
+3. Configure sua chave da API TMDB em lib > apikey.dart
+
+4. Execute o app:
+   ```bash
+   flutter run
+
+
+## 📄 Licença
+
+- Este projeto é de uso livre para fins de estudo e desenvolvimento pessoal.

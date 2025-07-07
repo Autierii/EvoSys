@@ -13,11 +13,20 @@ class DetailsPage extends StatelessWidget {
     final contentWidth = isWide ? 600.0 : double.infinity;
 
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
+      backgroundColor: const Color(0xFFE3F2FD), // Azul claro
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade900,
-        title: const Text('Detalhes do Filme'),
+        backgroundColor: const Color(0xFF0D47A1), // Azul escuro
         centerTitle: true,
+        title: const Text(
+          'Detalhes do Filme',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: SizedBox(
@@ -41,6 +50,7 @@ class DetailsPage extends StatelessWidget {
                 Text(
                   movie.title,
                   style: const TextStyle(
+                    fontFamily: 'Roboto',
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -51,7 +61,9 @@ class DetailsPage extends StatelessWidget {
                 Text(
                   'Lançamento: ${movie.releaseDate.year}',
                   style: const TextStyle(
+                    fontFamily: 'Roboto',
                     fontSize: 16,
+                    fontWeight: FontWeight.w500,
                     color: Colors.black54,
                   ),
                   textAlign: TextAlign.center,
@@ -59,7 +71,12 @@ class DetailsPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   movie.overview,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 16,
+                    color: Colors.black87,
+                    height: 1.5,
+                  ),
                   textAlign: TextAlign.justify,
                 ),
               ],

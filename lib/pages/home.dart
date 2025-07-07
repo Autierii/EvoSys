@@ -93,17 +93,25 @@ void dispose() {
     final viewportFraction = isWide ? 0.35 : 0.55;
 
     return Scaffold(
-      backgroundColor: Colors.blue.shade50,
+      backgroundColor: const Color(0xFFE3F2FD), // Azul claro (blue.shade50)
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade900,
+        backgroundColor: const Color(0xFF0D47A1), // Azul escuro (blue.shade900)
         leading: isSearching
             ? IconButton(
-                icon: const Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: _resetSearch,
               )
             : null,
         centerTitle: true,
-        title: const Text('EVO System'),
+        title: const Text(
+          'EVO System',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: Center(
         child: SizedBox(
@@ -131,6 +139,7 @@ void dispose() {
                     const Text(
                       'Em alta esta semana',
                       style: TextStyle(
+                        fontFamily: 'Roboto',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
@@ -161,6 +170,7 @@ void dispose() {
                     const Text(
                       'Lançamentos Recentes',
                       style: TextStyle(
+                        fontFamily: 'Roboto',
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
@@ -192,6 +202,7 @@ void dispose() {
         ),
       ),
     );
+
   }
 
   Widget _buildCarousel({
@@ -286,37 +297,52 @@ void dispose() {
   );
 }
 
-  Widget _buildSearchField() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.blue.shade100,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: TextField(
-        controller: _controller,
-        style: const TextStyle(color: Colors.black),
-        decoration: const InputDecoration(
-          labelText: 'Digite o nome do filme',
-          border: InputBorder.none,
-        ),
-        onSubmitted: (_) => _search(),
-      ),
-    );
-  }
+        Widget _buildSearchField() {
+        return Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFBBDEFB), 
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: TextField(
+            controller: _controller,
+            style: const TextStyle(
+              color: Colors.black,
+              fontFamily: 'Roboto',
+            ),
+            decoration: const InputDecoration(
+              labelText: 'Digite o nome do filme',
+              labelStyle: TextStyle(
+                fontFamily: 'Roboto',
+                color: Colors.black54,
+              ),
+              border: InputBorder.none,
+            ),
+            onSubmitted: (_) => _search(),
+          ),
+        );
+      }
 
-  Widget _buildSearchButton() {
-    return Center(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue.shade700,
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+
+      Widget _buildSearchButton() {
+      return Center(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF1976D2), // Azul médio (blue.shade700)
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+            textStyle: const TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          onPressed: _search,
+          child: const Text('Buscar'),
         ),
-        onPressed: _search,
-        child: const Text('Buscar'),
-      ),
-    );
-  }
+      );
+    }
+
 
   Widget _buildSearchResults() {
     return ListView.builder(
